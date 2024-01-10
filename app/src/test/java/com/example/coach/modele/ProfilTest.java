@@ -4,10 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.util.Date;
+
 public class ProfilTest {
 
     // Creéation d'un profil
-    private Profil profil = new Profil(67, 165, 35, 0);
+    private Profil profil = new Profil(new Date(), 165, 35, 0, 67);
     // Résultat de l'IMG correspondant au profil
     private float img = (float) 32.2;
     private String message = "Trop élevé";

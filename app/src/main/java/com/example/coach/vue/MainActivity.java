@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.example.coach.R;
 import com.example.coach.controleur.Controle;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     // Propriétés

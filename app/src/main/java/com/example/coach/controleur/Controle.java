@@ -2,8 +2,11 @@ package com.example.coach.controleur;
 
 import android.content.Context;
 
+import com.example.coach.modele.AccesLocal;
 import com.example.coach.modele.Profil;
 import com.example.coach.outils.Serializer;
+
+import java.util.Date;
 
 /**
  * Classe singleton Controle : répond aux attentes de l'activity
@@ -11,14 +14,16 @@ import com.example.coach.outils.Serializer;
 public final class Controle {
 
     // Propriétés
-    private static Controle instance = null;
+    private static Controle instance;
     private static Profil profil;
     private static String nomFic = "saveprofil";
+    private AccesLocal accesLocal;
 
     // Constructeur
     private Controle(Context context) {
-        super();
-        recupSerialize(context);
+        // recupSerialize(context);
+        accesLocal = AccesLocal.getInstance(context);
+        profil = accesLocal.recupDernier();
     }
 
     /**
@@ -27,9 +32,9 @@ public final class Controle {
      */
     public final static Controle getInstance(Context context) {
         if(Controle.instance == null){
-            Controle.instance = new Controle(context);
+            instance = new Controle(context);
         }
-        return Controle.instance;
+        return instance;
 
     }
 
@@ -40,9 +45,10 @@ public final class Controle {
      * @param age
      * @param sexe 1 = homme, 0 = femme
      */
-    public void creerProfil(Integer poids, Integer taille , Integer age, Integer sexe, Context context){
-        profil = new Profil(poids, taille, age, sexe);
-        Serializer.serialize(nomFic, profil, context);
+    public void creerProfil(Integer poids, Integer taille, Integer age, Integer sexe, Context context) {
+        profil = new Profil(new Date(), poids, taille, age, sexe);
+        accesLocal.ajout(profil);
+//        Serializer.serialize(nomFic, profil, context);
     }
 
     /**
@@ -117,6 +123,10 @@ public final class Controle {
         }
     }
 
+    /**
+     * Récupération du profil sérialisé
+     * @param context
+     */
     private static void  recupSerialize(Context context){
         profil = (Profil) Serializer.deSerialize(nomFic, context);
     }
